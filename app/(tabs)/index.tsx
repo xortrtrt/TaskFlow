@@ -1,12 +1,7 @@
-import { MaterialIcons } from "@expo/vector-icons";
 import { useEffect, useState } from "react";
-import {
-  StyleSheet,
-  Text,
-  TextInput,
-  TouchableOpacity,
-  View,
-} from "react-native";
+import { StyleSheet, Text, View } from "react-native";
+import TaskForm from "../../components/TaskForm";
+import TaskItem from "../../components/TaskItem";
 import { supabase } from "../../lib/supabase"; // Adjusted path for your folder structure
 
 // 1. Define the shape of a Task for TypeScript
@@ -98,41 +93,16 @@ export default function App() {
       </View>
 
       {/* Input Row */}
-      <View style={styles.inputRow}>
-        <TextInput
-          style={styles.input}
-          placeholder="Enter Task"
-          value={task}
-          onChangeText={setTask}
-        />
-        <TouchableOpacity style={styles.addButton} onPress={addTask}>
-          <MaterialIcons name="add" size={22} color="#fff" />
-        </TouchableOpacity>
-      </View>
+      <TaskForm task={task} setTask={setTask} onAdd={addTask} />
 
       {/* Task List */}
       {tasks.map((item) => (
-        <TouchableOpacity
+        <TaskItem
           key={item.id}
-          onPress={() => toggleTask(item)}
-          onLongPress={() => deleteTask(item.id)}
-        >
-          <View style={styles.taskRow}>
-            <MaterialIcons
-              name={item.completed ? "check-box" : "check-box-outline-blank"}
-              size={20}
-              color={item.completed ? "#2E5BBA" : "#5A6472"}
-            />
-            <Text
-              style={[
-                styles.taskText,
-                item.completed && styles.taskTextCompleted,
-              ]}
-            >
-              {item.title}
-            </Text>
-          </View>
-        </TouchableOpacity>
+          item={item}
+          onToggle={toggleTask}
+          onDelete={deleteTask}
+        />
       ))}
     </View>
   );
@@ -190,6 +160,7 @@ const styles = StyleSheet.create({
   },
   taskText: {
     fontSize: 15,
+    flex: 1,
   },
 
   taskTextCompleted: {
