@@ -84,18 +84,12 @@ export default function App() {
         <Text style={headerStyles.title}>TaskFlow</Text>
       </View>
 
-      {/* Replaced the old input with a button to open the modal */}
-      <TouchableOpacity
-        style={styles.openModalButton}
-        onPress={() => setModalVisible(true)}
-      >
-        <MaterialIcons name="add" size={22} color="#fff" />
-        <Text style={styles.openModalText}>New Task</Text>
-      </TouchableOpacity>
+      {/* Floating Add FAB (bottom-right) */}
 
       <FlatList
         data={tasks}
         keyExtractor={(item) => item.id}
+        contentContainerStyle={{ paddingBottom: 140 }}
         renderItem={({ item }) => (
           <TouchableOpacity
             onPress={() => toggleTask(item)}
@@ -119,6 +113,15 @@ export default function App() {
           </TouchableOpacity>
         )}
       />
+      {/* Floating FAB */}
+      <TouchableOpacity
+        style={styles.fab}
+        onPress={() => setModalVisible(true)}
+        hitSlop={{ top: 10, bottom: 10, left: 10, right: 10 }}
+        activeOpacity={0.85}
+      >
+        <MaterialIcons name="add" size={28} color="#fff" />
+      </TouchableOpacity>
 
       {/* Render the modal component, hidden by default */}
       <AddTaskModal
@@ -167,6 +170,22 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
     marginLeft: 8,
     fontSize: 16,
+  },
+  fab: {
+    position: "absolute",
+    right: 20,
+    bottom: 30,
+    width: 56,
+    height: 56,
+    borderRadius: 28,
+    backgroundColor: "#2E5BBA",
+    justifyContent: "center",
+    alignItems: "center",
+    elevation: 6,
+    shadowColor: "#000",
+    shadowOffset: { width: 0, height: 3 },
+    shadowOpacity: 0.3,
+    shadowRadius: 4,
   },
   taskRow: {
     flexDirection: "row",
