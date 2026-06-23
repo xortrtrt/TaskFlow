@@ -9,6 +9,7 @@ import {
 } from "react-native";
 import Toast from "react-native-toast-message";
 import AddTaskModal from "../../components/AddTaskModal"; // Import the new modal
+import TaskItem from "../../components/TaskItem";
 import { supabase } from "../../lib/supabase";
 
 type Task = {
@@ -91,26 +92,7 @@ export default function App() {
         keyExtractor={(item) => item.id}
         contentContainerStyle={{ paddingBottom: 140 }}
         renderItem={({ item }) => (
-          <TouchableOpacity
-            onPress={() => toggleTask(item)}
-            onLongPress={() => deleteTask(item.id)}
-          >
-            <View style={styles.taskRow}>
-              <MaterialIcons
-                name={item.completed ? "check-box" : "check-box-outline-blank"}
-                size={20}
-                color={item.completed ? "#2E5BBA" : "#5A6472"}
-              />
-              <Text
-                style={[
-                  styles.taskText,
-                  item.completed && styles.taskTextCompleted,
-                ]}
-              >
-                {item.title}
-              </Text>
-            </View>
-          </TouchableOpacity>
+          <TaskItem item={item} onToggle={toggleTask} onDelete={deleteTask} />
         )}
       />
       {/* Floating FAB */}
@@ -129,6 +111,8 @@ export default function App() {
         onClose={() => setModalVisible(false)}
         onSubmit={handleSubmitTask}
       />
+      {/* Toast messages */}
+      <Toast />
     </View>
   );
 }
